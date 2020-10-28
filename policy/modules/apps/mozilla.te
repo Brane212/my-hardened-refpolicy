@@ -804,3 +804,103 @@ gen_tunable(mozilla_plugin_connect_all_unreserved, false)
 		gnome_dbus_chat_gconfd(mozilla_t)
 	')
 ')
+
+gen_require(`
+	type gnome_xdg_config_t;
+	type user_home_dld_dir_t;
+	type user_home_dld_t;
+	type user_dld_dir_t;
+	type user_dld_t;
+	type xkb_var_lib_t;
+	type fonts_cache_t;
+	type home_root_t;
+	type mesa_shader_cache_t;
+	type mplayer_t;
+	type user_runtime_t;
+	type session_dbusd_home_t;
+')
+allow mozilla_t gnome_xdg_config_t:dir { watch getattr read search };
+allow mozilla_t gnome_xdg_config_t:file { map getattr open read };
+
+allow mozilla_t user_dld_dir_t:dir { search add_name remove_name create getattr open read watch write };
+allow mozilla_t user_dld_dir_t:file { create getattr open write setattr };
+
+allow mozilla_t user_home_dld_dir_t:dir { add_name remove_name getattr open read search watch write };
+allow mozilla_t user_home_dld_dir_t:file { getattr setattr open read write create append };
+
+allow mozilla_t user_home_dld_t:dir { open read write add_name remove_name watch setattr getattr search };
+allow mozilla_t user_home_dld_t:file { create unlink getattr setattr open read write append };
+
+allow mozilla_t user_dld_t:dir { open read write add_name remove_name setattr getattr search };
+allow mozilla_t user_dld_t:file { create unlink getattr setattr open read write append };
+
+
+
+allow mozilla_t home_root_t:dir read;
+allow mozilla_t user_home_dir_t:dir watch;
+
+
+allow mozilla_t user_home_t:dir watch;
+allow mozilla_t home_root_t:dir  watch  ;
+
+allow mozilla_t mplayer_t:sem { unix_read unix_write };
+allow mozilla_t session_dbusd_home_t:dir { getattr read };
+
+allow mozilla_t user_home_dld_t:dir { read open search add_name remove_name };
+allow mozilla_t user_home_dld_dir_t:dir { read add_name remove_name search } ;
+allow mozilla_t user_home_dld_t:file { read open write append getattr setattr };
+
+allow mozilla_t user_dld_t:dir { read open search add_name remove_name };
+allow mozilla_t user_dld_dir_t:dir { read add_name remove_name search } ;
+allow mozilla_t user_dld_t:file { read open write append getattr setattr };
+
+allow mozilla_t user_home_t:dir watch;
+allow mozilla_t home_root_t:dir { read watch };
+allow mozilla_t user_home_t:dir write;
+allow mozilla_t user_runtime_t:sock_file create;
+
+allow mozilla_t mesa_shader_cache_t:file create;
+allow mozilla_t mplayer_t:sem { unix_read unix_write };
+
+
+
+
+
+
+allow mozilla_t user_runtime_t:file { map open read write };
+allow mozilla_t user_tmpfs_t:file write;
+allow mozilla_t user_tmpfs_t:file map;
+allow mozilla_t xdg_cache_t:file { map getattr open read };
+allow mozilla_t xdg_config_t:dir watch;
+allow mozilla_t xdg_data_t:dir { add_name remove_name write watch };
+allow mozilla_t xdg_data_t:file { create rename setattr unlink write };
+allow mozilla_t xkb_var_lib_t:dir { getattr read search map open };
+allow mozilla_t xkb_var_lib_t:file { getattr map open read };
+allow mozilla_t fonts_cache_t:dir setattr;
+
+allow mozilla_t nfs_t:dir { getattr search };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

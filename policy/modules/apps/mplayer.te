@@ -270,4 +270,26 @@ ifdef(`distro_gentoo',`
 			alsa_domain(mplayer_t, mplayer_tmpfs_t)
 		')
 	')
+	gen_require(`
+		type dri_device_t;
+		type mesa_shader_cache_t;
+		type mozilla_t;
+		type selinux_config_t;
+		type sysctl_vm_overcommit_t;
+		type user_t;
+		type user_tmpfs_t;
+		type xkb_var_lib_t;
+	')
+	allow mplayer_t dri_device_t:chr_file { getattr ioctl map open read write };
+	allow mplayer_t mesa_shader_cache_t:file { create rename };
+	allow mplayer_t mozilla_t:sem { associate destroy read unix_read unix_write write };
+	allow mplayer_t mozilla_t:shm { associate destroy getattr read unix_read unix_write write };
+	allow mplayer_t self:process execmem;
+	allow mplayer_t self:process setsched;
+	allow mplayer_t selinux_config_t:dir search;
+	allow mplayer_t sysctl_vm_overcommit_t:file { open read };
+	allow mplayer_t user_t:unix_stream_socket connectto;
+	allow mplayer_t user_tmpfs_t:file write;
+	allow mplayer_t user_tmpfs_t:file map;
+	allow mplayer_t xkb_var_lib_t:dir read;
 ')

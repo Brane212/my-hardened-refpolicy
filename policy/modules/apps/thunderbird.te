@@ -13,16 +13,16 @@ userdom_user_application_domain(thunderbird_t, thunderbird_exec_t)
 role thunderbird_roles types thunderbird_t;
 
 type thunderbird_home_t;
-userdom_user_home_content(thunderbird_home_t)
+# userdom_user_home_content(thunderbird_home_t)
 
 type thunderbird_tmp_t;
-userdom_user_tmp_file(thunderbird_tmp_t)
+# userdom_user_tmp_file(thunderbird_tmp_t)
 
 type thunderbird_tmpfs_t;
-userdom_user_tmpfs_file(thunderbird_tmpfs_t)
+# userdom_user_tmpfs_file(thunderbird_tmpfs_t)
 
 type thunderbird_xdg_cache_t;
-xdg_cache_content(thunderbird_xdg_cache_t)
+# xdg_cache_content(thunderbird_xdg_cache_t)
 
 optional_policy(`
 	wm_application_domain(thunderbird_t, thunderbird_exec_t)
@@ -171,7 +171,7 @@ optional_policy(`
 ')
 
 optional_policy(`
-	mozilla_read_user_home_files(thunderbird_t)
+#	mozilla_read_user_home_files(thunderbird_t)
 	mozilla_domtrans(thunderbird_t)
 ')
 
@@ -198,6 +198,85 @@ ifdef(`distro_gentoo',`
 		pulseaudio_domtrans(thunderbird_t)
 		pulseaudio_tmpfs_content(thunderbird_tmpfs_t)
 	')
+	gen_require(`
+		type user_tmp_t;
+		type xkb_var_lib_t;
+		type user_tmp_t;
+		type user_home_dld_dir_t;
+		type user_home_dld_t;
+		type user_dld_dir_t;
+		type user_dld_t;
+		type gnome_xdg_config_t;
+		type xkb_var_lib_t;
+		type thunderbird_home_t;
+		type systemd_coredump_t;
+		type user_t;
+		type gnome_xdg_config_t;
+		type user_home_dld_t;
+		type user_home_dld_dir_t;
+		type user_dld_t;
+		type user_dld_dir_t;
+		type mesa_shader_cache_t;
+		type nfs_t;
+		type selinux_config_t;
+		type xdg_data_t;
+		type xkb_var_lib_t;
+		type unreserved_port_t;
+		type user_tmpfs_t;
+		type fs_t;
+		type xdg_config_t;
+	')
+	allow user_t thunderbird_t:process { noatsecure rlimitinh siginh };
+	allow systemd_coredump_t thunderbird_t:dir search;
+	allow systemd_coredump_t user_t:dir { open read };
+
+	allow user_t thunderbird_t:fd use;
+	allow thunderbird_t thunderbird_home_t:file map;
+	allow thunderbird_t xkb_var_lib_t:file { open read };
+	allow thunderbird_t user_tmp_t:file map;
+	allow thunderbird_t xkb_var_lib_t:dir getattr;
+	allow thunderbird_t user_tmp_t:file map;
+	allow thunderbird_t xkb_var_lib_t:dir getattr;
+	allow thunderbird_t xkb_var_lib_t:dir { read search };
+	
+	allow thunderbird_t gnome_xdg_config_t:file { getattr open read };
+
+    allow thunderbird_t user_home_dld_t:dir { read open search add_name remove_name };
+    allow thunderbird_t user_home_dld_dir_t:dir { read add_name remove_name search } ;
+    allow thunderbird_t user_home_dld_t:file { read open write append getattr setattr };
+    
+    allow thunderbird_t user_dld_t:dir { read open search add_name remove_name };
+    allow thunderbird_t user_dld_dir_t:dir { read add_name remove_name search } ;
+    allow thunderbird_t user_dld_t:file { read open write append getattr setattr };
+
+	allow thunderbird_t gnome_xdg_config_t:dir { read search watch };
+	allow thunderbird_t gnome_xdg_config_t:file { open read map };
+
+	allow thunderbird_t mesa_shader_cache_t:dir { getattr search };
+	allow thunderbird_t nfs_t:dir { getattr search };
+	allow thunderbird_t self:cap_userns sys_admin;
+	allow thunderbird_t selinux_config_t:dir search;
+	allow thunderbird_t unreserved_port_t:tcp_socket name_connect;
+	allow thunderbird_t user_dld_dir_t:dir getattr;
+	allow thunderbird_t user_home_dld_dir_t:dir getattr;
+	allow thunderbird_t user_home_dld_t:dir getattr;
+
+	allow thunderbird_t user_tmpfs_t:file write;
+	allow thunderbird_t xdg_data_t:dir watch;
+
+	allow thunderbird_t xdg_data_t:dir { add_name remove_name write };
+
+	allow thunderbird_t xdg_data_t:file { create rename unlink write };
+	allow thunderbird_t xkb_var_lib_t:file { open map getattr };
+	allow thunderbird_home_t fs_t:filesystem associate;
+	allow thunderbird_t etc_t:dir watch;
+	allow thunderbird_t usr_t:dir watch;
+	allow thunderbird_t xdg_cache_t:file { create getattr };
+	allow thunderbird_t xdg_config_t:dir watch;
+	allow thunderbird_tmp_t tmpfs_t:filesystem associate;
+	allow thunderbird_t user_tmpfs_t:file map;
+
+	
 ')
 
 optional_policy(`

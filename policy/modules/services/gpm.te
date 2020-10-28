@@ -81,3 +81,12 @@ optional_policy(`
 optional_policy(`
 	udev_read_db(gpm_t)
 ')
+
+ifdef(`distro_gentoo',`
+	ifdef(`init_systemd',`
+		gen_require(`
+			type sysadm_t;
+		')
+		allow sysadm_t gpm_t:unix_stream_socket connectto;
+	')
+')

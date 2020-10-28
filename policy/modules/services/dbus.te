@@ -312,6 +312,16 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		hal_dbus_chat(session_bus_type)
 	')
+	ifdef(`init_systemd',`
+		gen_require(`
+			type	user_dbusd_t;
+			type user_t;
+		')
+	allow user_dbusd_t self:process getcap;
+	allow user_dbusd_t user_t:process { noatsecure rlimitinh siginh };
+	')
+
+
 ')
 
 optional_policy(`

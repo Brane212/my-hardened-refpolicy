@@ -96,6 +96,14 @@ ifdef(`distro_gentoo',`
 	# Gentoo default /etc/issue makes agetty
 	# do a DNS lookup for the hostname
 	sysnet_dns_name_resolve(getty_t)
+	ifdef(`init_systemd',`
+		gen_require(`
+			type local_login_t;
+		')
+		allow getty_t getty_runtime_t:file watch;
+		allow getty_t local_login_t:process { noatsecure rlimitinh siginh };
+		
+	')
 ')
 
 ifdef(`distro_ubuntu',`

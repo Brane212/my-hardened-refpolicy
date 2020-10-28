@@ -88,6 +88,22 @@ files_poly_member(user_home_dir_t)
 files_poly_parent(user_home_dir_t)
 ubac_constrained(user_home_dir_t)
 
+type user_home_dld_dir_t;
+files_type(user_home_dld_dir_t)
+
+type user_home_dld_t;
+files_type(user_home_dld_t)
+
+filetrans_pattern(user_t,user_home_dld_dir_t,user_home_dld_t,dir)
+
+type user_dld_dir_t;
+files_type(user_dld_dir_t)
+
+type user_dld_t;
+files_type(user_dld_t)
+
+filetrans_pattern(user_t,user_dld_dir_t,user_dld_t,dir)
+
 type user_home_t;
 userdom_user_home_content(user_home_t)
 fs_associate_tmpfs(user_home_t)
@@ -136,4 +152,82 @@ ifdef(`distro_gentoo',`
 	# concept as user_cert_t. Enabling an alias to keep custom modules from
 	# users running.
 	typealias user_cert_t alias cert_home_t;
+	ifdef(`init_systemd',`
+		gen_require(`
+			type user_t;
+			type dri_device_t;
+			type event_device_t;
+			type systemd_logind_t;
+			type systemd_sessions_runtime_t;
+			type udev_runtime_t;
+			type xkb_var_lib_t;
+			type gnome_xdg_config_t;
+			type mount_runtime_t;
+			type nfs_t;
+			type sysctl_vm_overcommit_t;
+			type user_dbusd_t;
+			type xdg_data_t;
+			type xdm_tmp_t;
+			type xdg_config_t;
+			type init_t;
+			type devlog_t;
+			type gpm_t;
+			type gpmctl_t;
+			type syslogd_t;
+			type user_runtime_t;
+			type debugfs_t;
+			type init_runtime_t;
+			type initrc_t;
+			type mplayer_t;
+			type portage_tmp_t;
+			type usb_device_t;
+			type tty_device_t;
+			type mozilla_t;
+		')
+		allow user_t dri_device_t:chr_file map;
+		allow user_t event_device_t:chr_file write;
+		allow user_t systemd_logind_t:fd use;
+		allow user_t systemd_sessions_runtime_t:file { open read };
+		allow user_t udev_runtime_t:file { open read };
+		allow user_t xkb_var_lib_t:file map;
+
+		allow user_t gnome_xdg_config_t:dir watch;
+		allow user_t mount_runtime_t:file { open read };
+		allow user_t nfs_t:dir watch;
+		allow user_t sysctl_vm_overcommit_t:file { open read };
+		allow user_t user_dbusd_t:unix_stream_socket { read write };
+		allow user_t xdg_data_t:dir watch;
+		allow user_t xdm_tmp_t:sock_file unlink;
+		allow user_t xdg_config_t:dir watch;
+		allow user_t self:process execmem;
+		allow user_t init_t:process getpgid;
+		
+		allow user_t devlog_t:sock_file write;
+		allow user_t gpm_t:unix_stream_socket connectto;
+		allow user_t gpmctl_t:sock_file write;
+		allow user_t syslogd_t:unix_dgram_socket sendto;
+		allow user_t user_runtime_t:file { map open read write };
+		
+		allow user_t debugfs_t:dir search;
+		allow user_t dri_device_t:chr_file { getattr ioctl open read write };
+		allow user_t init_runtime_t:dir search;
+		allow user_t init_t:dir search;
+		allow user_t init_t:file { getattr ioctl open read };
+		allow user_t initrc_t:dir search;
+		allow user_t initrc_t:file { open read };
+		allow user_t mount_runtime_t:dir search;
+		allow user_t mount_runtime_t:file getattr;
+		allow user_t mplayer_t:fd use;
+		allow user_t mplayer_t:process { noatsecure rlimitinh siginh };
+		allow user_t portage_tmp_t:dir search;
+		allow user_t systemd_sessions_runtime_t:dir search;
+		allow user_t systemd_sessions_runtime_t:file getattr;
+		allow user_t udev_runtime_t:dir search;
+		allow user_t udev_runtime_t:file getattr;
+		allow user_t usb_device_t:chr_file write;
+		allow user_t user_dbusd_t:process { noatsecure rlimitinh siginh };
+		allow user_t user_dbusd_t:unix_stream_socket getattr;
+		allow user_t tty_device_t:chr_file getattr;
+		allow user_t mozilla_t:fifo_file write;
+	')
 ')

@@ -300,4 +300,25 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		cgmanager_stream_connect(local_login_t)
 	')
+	ifdef(`init_systemd',`
+	    gen_require(`
+			type init_runtime_t;
+			type systemd_machined_t;
+			type chkpwd_t;
+			type shadow_t;
+			type sysadm_t;
+			type user_t;
+			class unix_stream_socket connectto ;
+			
+	    ')	
+	
+	    allow local_login_t init_runtime_t:dir read;
+	    allow local_login_t init_runtime_t:sock_file write;
+	    allow local_login_t init_t:unix_stream_socket connectto;
+	    allow local_login_t systemd_machined_t:unix_stream_socket connectto;
+	    allow local_login_t chkpwd_t:process { noatsecure rlimitinh siginh };
+		allow local_login_t sysadm_t:process { noatsecure rlimitinh siginh };
+		auth_read_shadow(local_login_t)
+		allow local_login_t user_t:process { noatsecure rlimitinh siginh };
+	')
 ')

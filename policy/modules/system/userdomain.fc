@@ -1,6 +1,11 @@
 HOME_DIR	-d	gen_context(system_u:object_r:user_home_dir_t,s0-mls_systemhigh)
 HOME_DIR/.+		gen_context(system_u:object_r:user_home_t,s0)
 HOME_DIR/\.pki(/.*)?	gen_context(system_u:object_r:user_cert_t,s0)
+HOME_DIR/Downloads	-d 	gen_context(system_u:object_r:user_home_dld_dir_t,s0-mls_systemhigh)
+HOME_DIR/Downloads/.+		gen_context(system_u:object_r:user_home_dld_t,s0)
+/home/000_DLD	-d 	gen_context(system_u:object_r:user_dld_dir_t,s0-mls_systemhigh)
+/home/000_DLD/.+		gen_context(system_u:object_r:user_dld_t,s0)
+
 
 /tmp/gconfd-%{USERNAME} -d	gen_context(system_u:object_r:user_tmp_t,s0)
 

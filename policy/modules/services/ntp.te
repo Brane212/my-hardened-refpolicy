@@ -141,10 +141,13 @@ userdom_dontaudit_use_unpriv_user_fds(ntpd_t)
 userdom_list_user_home_dirs(ntpd_t)
 
 ifdef(`init_systemd',`
+	gen_require(`
+		type selinux_config_t;
+	')
 	allow ntpd_t self:process setfscreate;
 
 	allow ntpd_t ntpd_unit_t:file read_file_perms;
-
+	allow ntpd_t selinux_config_t:dir search;
 	dbus_system_bus_client(ntpd_t)
 	dbus_connect_system_bus(ntpd_t)
 	dbus_watch_system_bus_runtime_dirs(ntpd_t)

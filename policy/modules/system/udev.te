@@ -414,6 +414,207 @@ ifdef(`distro_gentoo',`
 	udev_pid_filetrans_db(udev_t, dir, "data")
 
 	init_domtrans_script(udev_t)
+	ifdef(`init_systemd',`
+	    gen_require(`
+			type cgroup_t;
+			type init_runtime_t;
+			type systemd_sessions_runtime_t;
+			type devlog_t;
+			type modules_conf_t;
+			type modules_object_t;
+			type syslogd_runtime_t;
+			type syslogd_t;
+			type systemd_hwdb_t;
+			type udev_rules_t;
+			type udev_runtime_t;
+			type modules_dep_t;
+			type net_conf_t;
+			type dri_device_t;
+			type systemd_hwdb_t;
+			type event_device_t;
+			type kvm_device_t;	
+			type device_t;
+			type bin_t;
+			type net_conf_t;
+			type udev_rules_t;			
+			type kvm_device_t;
+			type security_t;
+			type loop_control_device_t;
+			type mouse_device_t;
+			type sound_device_t;
+			type usb_device_t;
+			type acpi_bios_t;
+			type alsa_etc_t;
+			type alsa_exec_t;
+			type autofs_device_t;
+			type boot_t;
+			type cachefiles_device_t;
+			type clock_device_t;
+			type console_device_t;
+			type cpu_device_t;
+			type device_t;
+			type devtty_t;
+			type dri_device_t;
+			type fixed_disk_device_t;
+			type framebuf_device_t;
+			type fuse_device_t;
+			type gpiochip_device_t;
+			type home_root_t;
+			type kmsg_device_t;
+			type kvm_device_t;
+			type loadkeys_exec_t;
+			type loop_control_device_t;
+			type lvm_control_t;
+			type memory_device_t;
+			type mnt_t;
+			type modules_object_t;
+			type mouse_device_t;
+			type null_device_t;
+			type nvram_device_t;
+			type pmqos_device_t;
+			type ptmx_t;
+			type random_device_t;
+			type removable_device_t;
+			type scsi_generic_device_t;
+			type shell_exec_t;
+			type sysctl_net_t;
+			type tty_device_t;
+			type tun_tap_device_t;
+			type udev_runtime_t;
+			type urandom_device_t;
+			type usb_device_t;
+			type var_lock_t;
+			type vfio_device_t;
+			type vhost_device_t;
+			type xdg_config_t;
+			type zero_device_t;
+			type user_home_dir_t;
+			type xserver_misc_device_t;
+			
+	    ')
+		allow udevadm_t cgroup_t:dir search;
+		allow udevadm_t cgroup_t:file { getattr open read };
+		allow udevadm_t init_runtime_t:sock_file write;
+		allow udevadm_t self:process signal;
+		allow udevadm_t self:unix_dgram_socket { create getopt setopt };
+		allow udevadm_t systemd_sessions_runtime_t:file { getattr open read };
+		allow udevadm_t udev_runtime_t:dir add_name;
+		allow udevadm_t udev_runtime_t:file create;
+
+		
+		allow udevadm_t devlog_t:sock_file write;
+		allow udevadm_t modules_conf_t:dir getattr;
+		allow udevadm_t modules_object_t:dir search;
+		allow udevadm_t self:capability { fsetid sys_ptrace chown };
+		allow udevadm_t self:unix_dgram_socket connect;
+		allow udevadm_t syslogd_runtime_t:dir search;
+		allow udevadm_t syslogd_t:unix_dgram_socket sendto;
+		allow udevadm_t systemd_hwdb_t:file getattr;
+		allow udevadm_t udev_rules_t:dir getattr;
+		allow udevadm_t udev_runtime_t:file write;
+		
+		allow udevadm_t modules_dep_t:file { getattr map open read };
+		allow udevadm_t net_conf_t:dir { getattr open read search };
+		allow udevadm_t self:capability net_admin;
+		allow udevadm_t dri_device_t:chr_file { getattr setattr write };
+		
+		allow udevadm_t self:capability dac_override;
+		allow udevadm_t self:unix_dgram_socket { read sendto write };
+		allow udevadm_t systemd_sessions_runtime_t:dir search;
+		allow udevadm_t udev_runtime_t:file { rename setattr };
+		allow udevadm_t device_t:lnk_file { create relabelfrom relabelto write unlink };
+		
+		allow udevadm_t modules_conf_t:dir { open read search };
+		allow udevadm_t modules_conf_t:file { getattr read open };
+		allow udevadm_t systemd_hwdb_t:file { map open read };
+
+		allow udevadm_t net_conf_t:file { getattr open read };
+
+		allow udevadm_t device_t:dir { write  create add_name remove_name rmdir};
+		allow udevadm_t event_device_t:chr_file { ioctl open read setattr getattr write };
+		allow udevadm_t kvm_device_t:chr_file getattr;
+		allow udevadm_t udev_runtime_t:dir create;
+		allow udevadm_t device_t:lnk_file rename;
+		allow udevadm_t bin_t:file { execute execute_no_trans map open read };
+		allow udevadm_t net_conf_t:file ioctl;
+		allow udevadm_t self:fifo_file { getattr read write };
+		allow udevadm_t udev_rules_t:dir { open read search };
+		allow udevadm_t udev_rules_t:file { getattr ioctl open read };
+		allow udevadm_t kvm_device_t:chr_file { setattr write };
+		allow udevadm_t security_t:filesystem getattr;
+		allow udevadm_t self:capability sys_resource;
+		
+		allow udevadm_t cgroup_t:filesystem getattr;
+		allow udevadm_t event_device_t:chr_file { relabelfrom relabelto };
+		allow udevadm_t loop_control_device_t:chr_file getattr;
+		allow udevadm_t mouse_device_t:chr_file { relabelto write };
+		allow udevadm_t self:process { getsched setfscreate };
+		allow udevadm_t selinux_config_t:file { getattr open read };
+		allow udevadm_t sound_device_t:chr_file { getattr write };
+		allow udevadm_t usb_device_t:chr_file { getattr relabelto write };
+		
+		allow udevadm_t acpi_bios_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t alsa_etc_t:dir { getattr search };
+		allow udevadm_t alsa_etc_t:file { getattr map open read };
+		allow udevadm_t alsa_exec_t:file { execute execute_no_trans map open read };
+		allow udevadm_t autofs_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t bin_t:dir { getattr search };
+		allow udevadm_t bin_t:file getattr;
+		allow udevadm_t bin_t:lnk_file read;
+		allow udevadm_t boot_t:dir getattr;
+		allow udevadm_t cachefiles_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t clock_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t console_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t cpu_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t device_t:chr_file { getattr relabelfrom relabelto setattr write };
+		allow udevadm_t devtty_t:chr_file { relabelfrom relabelto setattr };
+		allow udevadm_t dri_device_t:chr_file { relabelfrom relabelto };
+		allow udevadm_t fixed_disk_device_t:blk_file { getattr lock relabelfrom relabelto setattr };
+		allow udevadm_t fixed_disk_device_t:chr_file { getattr relabelfrom relabelto };
+		allow udevadm_t framebuf_device_t:chr_file { getattr relabelfrom relabelto setattr write };
+		allow udevadm_t fuse_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t gpiochip_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t home_root_t:dir getattr;
+		allow udevadm_t kmsg_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t kvm_device_t:chr_file { relabelfrom relabelto };
+		allow udevadm_t loadkeys_exec_t:file { execute execute_no_trans map open read };
+		allow udevadm_t loop_control_device_t:chr_file { relabelfrom relabelto write };
+		allow udevadm_t lvm_control_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t memory_device_t:chr_file { getattr relabelfrom relabelto setattr };
+		allow udevadm_t mnt_t:dir getattr;
+		allow udevadm_t modules_object_t:file { getattr map open read };
+		allow udevadm_t modules_object_t:system module_load;
+		allow udevadm_t mouse_device_t:chr_file { getattr relabelfrom setattr };
+		allow udevadm_t null_device_t:chr_file { relabelfrom relabelto };
+		allow udevadm_t nvram_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t pmqos_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t ptmx_t:chr_file { getattr relabelfrom relabelto setattr write };
+		allow udevadm_t random_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t removable_device_t:blk_file { getattr ioctl lock open read relabelfrom relabelto setattr write };
+		allow udevadm_t scsi_generic_device_t:chr_file { getattr relabelfrom relabelto setattr };
+		allow udevadm_t self:capability { fowner sys_rawio sys_tty_config };
+		allow udevadm_t self:fifo_file ioctl;
+		allow udevadm_t self:netlink_route_socket { bind create getattr getopt nlmsg_read nlmsg_write read setopt write };
+		allow udevadm_t self:udp_socket { create ioctl };
+		allow udevadm_t shell_exec_t:file { execute execute_no_trans getattr map open read };
+		allow udevadm_t sound_device_t:chr_file { ioctl open read relabelfrom relabelto setattr };
+		allow udevadm_t sysctl_net_t:dir { getattr open read search };
+		allow udevadm_t sysctl_net_t:file { getattr open write };
+		allow udevadm_t tmp_t:dir getattr;
+		allow udevadm_t tty_device_t:chr_file { getattr ioctl open read relabelfrom relabelto setattr write };
+		allow udevadm_t tun_tap_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t udev_runtime_t:lnk_file create;
+		allow udevadm_t urandom_device_t:chr_file { relabelfrom relabelto write };
+		allow udevadm_t usb_device_t:chr_file { relabelfrom setattr };
+		allow udevadm_t user_home_dir_t:dir { getattr search };
+		allow udevadm_t var_lock_t:lnk_file read;
+		allow udevadm_t vfio_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t vhost_device_t:chr_file { getattr relabelfrom relabelto setattr write };
+		allow udevadm_t xdg_config_t:dir search;
+		allow udevadm_t xserver_misc_device_t:chr_file { getattr relabelfrom relabelto write };
+		allow udevadm_t zero_device_t:chr_file { relabelfrom relabelto };
+		allow udevadm_t tmpfs_t:dir getattr;
+	')
 ')
 
 ########################################

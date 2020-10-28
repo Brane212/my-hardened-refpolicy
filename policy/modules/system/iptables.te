@@ -149,3 +149,28 @@ optional_policy(`
 	# this is for iptables_t to inherit a file handle from xen vif-bridge
 	udev_manage_runtime_files(iptables_t)
 ')
+
+ifdef(`distro_gentoo',`
+		ifdef(`init_systemd',`
+			gen_require(`
+				type kernel_t;	
+			')
+		allow iptables_t kernel_t:fifo_file { read write };
+		')
+')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

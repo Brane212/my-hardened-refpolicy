@@ -68,4 +68,13 @@ ifdef(`distro_gentoo',`
 
 	# Bug 529208
 	dev_read_kmsg(dmesg_t)
+	ifdef(`init_systemd',`
+		gen_require(`
+			type dmesg_t;
+			type xdg_config_t;
+			type etc_t;
+		')
+		allow dmesg_t xdg_config_t:dir search;
+		allow dmesg_t etc_t:file { getattr open read };
+	')
 ')

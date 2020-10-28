@@ -303,3 +303,38 @@ optional_policy(`
 optional_policy(`
 	hal_read_state(policykit_resolve_t)
 ')
+
+ifdef(`distro_gentoo',`
+	ifdef(`init_systemd',`
+		gen_require(`
+			type systemd_logind_runtime_t;
+			type systemd_machined_runtime_t;
+			type systemd_sessions_runtime_t;
+			type security_t;
+			type selinux_config_t;
+		')
+		allow policykit_t systemd_logind_runtime_t:dir watch;
+		allow policykit_t systemd_machined_runtime_t:dir watch;
+		allow policykit_t systemd_sessions_runtime_t:dir watch;
+		allow policykit_t security_t:filesystem getattr;
+		allow policykit_t selinux_config_t:dir search;
+	')
+')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

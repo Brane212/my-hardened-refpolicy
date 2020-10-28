@@ -374,3 +374,25 @@ optional_policy(`
 optional_policy(`
 	vbetool_domtrans(devicekit_power_t)
 ')
+
+ifdef(`distro_gentoo',`
+	gen_require(`
+	type 	mount_runtime_t;
+	')
+	allow devicekit_disk_t mount_runtime_t:file { watch watch_reads };
+	allow devicekit_disk_t self:process setsched;
+')
+
+
+
+
+
+
+
+
+
+
+
+
+
+

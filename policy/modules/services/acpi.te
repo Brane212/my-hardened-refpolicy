@@ -243,3 +243,27 @@ optional_policy(`
 optional_policy(`
 	xserver_domtrans(acpid_t)
 ')
+
+ifdef(`distro_gentoo',`
+		ifdef(`init_systemd',`
+			allow acpid_t device_t:dir watch;
+		')
+')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

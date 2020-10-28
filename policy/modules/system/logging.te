@@ -562,6 +562,26 @@ ifdef(`distro_gentoo',`
 	# and high priority messages to /dev/tty12
 	# and chown/chgrp/chmod /dev/tty12, which is denied
 	term_dontaudit_setattr_unallocated_ttys(syslogd_t)
+	ifdef(`init_systemd',`
+	    gen_require(`
+		type syslogd_t;
+		type udevadm_t;
+		type init_t;
+		type systemd_machined_t;
+		type systemd_logind_t;
+		type user_runtime_t;
+		type user_runtime_root_t;
+		type systemd_user_runtime_t;
+	    ')
+	    allow syslogd_t udevadm_t:process signull;
+	    allow systemd_logind_t init_t:unix_stream_socket connectto;
+	    allow systemd_logind_t systemd_machined_t:unix_stream_socket connectto;
+	    allow syslogd_t self:capability dac_read_search;
+		allow syslogd_t systemd_user_runtime_t:dir search;
+		allow syslogd_t user_runtime_root_t:dir search;
+		allow syslogd_t user_runtime_t:dir search;
+
+	')
 ')
 
 ifdef(`distro_suse',`

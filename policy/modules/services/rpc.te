@@ -252,6 +252,7 @@ miscfiles_read_public_files(nfsd_t)
 
 ifdef(`distro_gentoo',`
 	allow nfsd_t self:udp_socket listen;
+	allow rpcd_t rpc_pipefs_t:dir watch;
 ')
 
 tunable_policy(`allow_nfsd_anon_write',`
@@ -358,3 +359,30 @@ optional_policy(`
 optional_policy(`
 	xserver_rw_xdm_tmp_files(gssd_t)
 ')
+
+ifdef(`distro_gentoo',`
+	ifdef(`init_systemd',`
+		gen_require(`
+			type rpcd_t;
+			type var_run_t;
+			type rpcbind_t;
+		')
+		allow rpcd_t self:udp_socket listen;
+		allow rpcbind_t var_run_t:dir { create setattr };
+	')
+')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

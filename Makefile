@@ -670,4 +670,9 @@ ifneq ($(generated_fc),)
 endif
 endif
 
-.PHONY: install-src install-appconfig install-headers build-interface-db generate xml conf html bare tags
+_mytarget:
+	echo "distro_gentoo is distro_${DISTRO} ..."
+
+
+
+.PHONY: install-src install-appconfig install-headers build-interface-db generate xml conf html bare tags _mytarget

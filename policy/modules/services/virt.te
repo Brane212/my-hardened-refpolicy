@@ -1381,3 +1381,56 @@ sysnet_dns_name_resolve(virtlogd_t)
 
 virt_manage_log(virtlogd_t)
 virt_read_config(virtlogd_t)
+
+
+ifdef(`distro_gentoo',`
+		ifdef(`init_systemd',`
+			gen_require(`
+					type cpu_device_t;
+					type initrc_runtime_t;
+					type systemd_logind_t;
+					type user_home_dld_t;
+					type dmidecode_t;
+					class dbus send_msg;
+					type 	cpu_device_t;
+					type initrc_runtime_t;
+			')
+			allow virtd_t cpu_device_t:chr_file read;
+			allow virtd_t initrc_runtime_t:file read;
+			allow virtd_t systemd_logind_t:dbus send_msg;
+			allow virtd_t user_home_dld_t:dir read;
+			
+			allow virtd_t dmidecode_t:process { noatsecure rlimitinh siginh };
+			allow virtd_t initrc_runtime_t:file open;
+			allow virtd_t user_home_dld_t:file getattr;
+			
+			allow virtd_t cpu_device_t:chr_file open;
+			allow virtd_t initrc_runtime_t:file lock;
+			allow virtd_t self:capability sys_rawio;
+			dontaudit virtd_t user_home_dld_t:file *;
+		')
+')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

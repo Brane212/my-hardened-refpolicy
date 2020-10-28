@@ -243,4 +243,11 @@ ifdef(`distro_gentoo',`
 	files_relabel_all_file_type_fs(mount_t)
 
 	selinux_get_fs_mount(mount_t)
+	ifdef(`init_systemd',`
+	    allow mount_t var_run_t:dir create;
+	    allow mount_t var_run_t:file { create open write };
+	')
+
+
+
 ')

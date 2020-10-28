@@ -476,3 +476,17 @@ optional_policy(`
 ifdef(`distro_gentoo',`
 	init_daemon_runtime_file(pam_runtime_t, dir, "sepermit")
 ')
+
+ifdef(`distro_gentoo',`
+	ifdef(`init_systemd',`
+		gen_require(`
+			type chkpwd_t;
+			type  tty_device_t;
+		')
+		allow chkpwd_t tty_device_t:chr_file { read write };
+	')
+')
+
+
+
+

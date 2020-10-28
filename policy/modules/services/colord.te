@@ -140,3 +140,41 @@ optional_policy(`
 	xserver_read_xdm_lib_files(colord_t)
 	xserver_use_xdm_fds(colord_t)
 ')
+
+ifdef(`distro_gentoo',`
+	gen_require(`
+		type selinux_config_t;
+		type cgroup_t;
+		type selinux_config_t;
+		type systemd_hwdb_t;
+		type fs_t;
+		type security_t;
+	
+	')
+	allow colord_t cgroup_t:filesystem getattr;
+	allow colord_t fs_t:filesystem getattr;
+	allow colord_t security_t:filesystem getattr;
+	allow colord_t self:process { getsched setsched };
+	allow colord_t selinux_config_t:dir search;
+	allow colord_t systemd_hwdb_t:file { getattr map open read };
+
+	
+	
+')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

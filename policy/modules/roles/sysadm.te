@@ -1466,4 +1466,49 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		vde_role(sysadm_r, sysadm_t)
 	')
+	ifdef(`init_systemd',`
+		gen_require(`
+			type init_t;
+			type kmsg_device_t;
+			type dmesg_t;
+			type event_device_t;
+			type semanage_t;
+			type ifconfig_t;
+			type iptables_t;
+			type ping_t;
+			type portage_t;
+			type portage_log_t;
+			type systemd_passwd_runtime_t;
+			type ldconfig_t;
+			type portage_log_t;
+			type initrc_t;
+			type mount_t;
+			type etc_t;
+			type nfsd_fs_t;
+			type setfiles_t;
+		')
+		allow sysadm_t init_t:unix_stream_socket { read write };
+		allow sysadm_t kmsg_device_t:chr_file write;
+		allow sysadm_t dmesg_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t event_device_t:chr_file write;
+		allow sysadm_t semanage_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t ifconfig_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t iptables_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t ping_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t portage_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t systemd_passwd_runtime_t:dir watch;
+		
+		allow sysadm_t ldconfig_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t portage_log_t:file watch;
+		allow sysadm_t self:netlink_route_socket nlmsg_write;
+		allow sysadm_t self:packet_socket { create ioctl };
+		allow sysadm_t initrc_t:unix_stream_socket connectto;
+		allow sysadm_t mount_t:process { noatsecure rlimitinh siginh };
+		allow sysadm_t etc_t:service { status stop };
+		allow sysadm_t nfsd_fs_t:dir read;
+		allow sysadm_t self:cap_userns sys_ptrace;
+		allow sysadm_t setfiles_t:process { noatsecure rlimitinh siginh };
+
+	')
+	
 ')

@@ -523,4 +523,11 @@ ifdef(`distro_gentoo',`
 	optional_policy(`
 		resolvconf_client_domain(dhcpc_script_t)
 	')
+#	ifdef(`init_systemd',`
+#		allow ifconfig_t self:capability sys_module;
+#	')
+	
+	
+	
+	
 ')
